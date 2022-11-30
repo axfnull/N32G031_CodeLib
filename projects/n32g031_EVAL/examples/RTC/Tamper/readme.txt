@@ -9,7 +9,7 @@
     IDE工具：KEIL MDK-ARM 5.21.1.0
       
     /* 硬件环境：工程对应的开发硬件平台 */
-    开发板：N32G031CL-STB V1.0     
+    开发板：N32G031C8L7-STB V1.0     
 
 
 
@@ -33,3 +33,40 @@
 
 4、注意事项
     无
+
+
+
+1. Function description
+    Intrusion is detected by PC13.
+
+
+
+2. Use environment
+
+    /* Software development environment: the name and version number of the software tool used in the current project */
+    IDE tool: KEIL MDK-ARM 5.21.1.0
+      
+    /* Hardware environment: the development hardware platform corresponding to the project */
+    Development board: N32G031C8L7-STB V1.0
+
+
+
+3. Instructions for use
+
+    System Configuration;
+        1. Clock: LSI
+        2. Detection port: PC13
+        3. Serial port configuration:
+                    - Serial port is USART1 (TX: PA9 RX: PA10):
+                    - Data bits: 8
+                    - Stop bit: 1
+                    - Parity: none
+                    - Baud rate: 115200
+
+
+    Instructions:
+        1. After compiling under KEIL, burn it to the evaluation board. After power-on, connect an external pull-up to PC13, connect PC13 to GND, and the serial port will print out Tamper interrupt.
+                               
+
+4. Matters needing attention
+    none

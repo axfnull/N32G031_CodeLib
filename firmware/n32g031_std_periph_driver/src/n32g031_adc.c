@@ -1111,6 +1111,24 @@ void ADC_EnableVrefint(FunctionalState Cmd)
 }
 
 /**
+ * @brief  Set Adc Clock bits for AHB .
+ * @param ADCx where x can be 1 to select the ADC peripheral.
+ */
+void ADC_AHB_Clock_Mode_Config(ADC_Module* ADCx)
+{
+    ADCx->CTRL3 &= ADC_CLOCK_AHB;  
+}
+
+/**
+ * @brief  Set Adc Clock bits for PLL .
+ * @param ADCx where x can be 1 to select the ADC peripheral.
+ */
+void ADC_PLL_Clock_Mode_Config(ADC_Module* ADCx)
+{   
+    ADCx->CTRL3 |= ADC_CLOCK_PLL;  
+}
+
+/**
  * @brief  Checks whether the specified ADC flag is set or not.
  * @param ADCx = ADC, to select the ADC peripheral.
  * @param ADC_FLAG specifies the flag to check.
@@ -1296,28 +1314,30 @@ FlagStatus ADC_GetFlagStatusNew(ADC_Module* ADCx, uint8_t ADC_FLAG_NEW)
  *   This parameter can be on of the following values:
  *     @arg RCC_ADCHCLK_DIV1 ADCHCLKPRE[3:0] = 0000, HCLK Clock Divided By 1
  *     @arg RCC_ADCHCLK_DIV2 ADCHCLKPRE[3:0] = 0001, HCLK Clock Divided By 2
- *     @arg RCC_ADCHCLK_DIV4 ADCHCLKPRE[3:0] = 0010, HCLK Clock Divided By 4
- *     @arg RCC_ADCHCLK_DIV6 ADCHCLKPRE[3:0] = 0011, HCLK Clock Divided By 6
- *     @arg RCC_ADCHCLK_DIV8 ADCHCLKPRE[3:0] = 0100, HCLK Clock Divided By 8
- *     @arg RCC_ADCHCLK_DIV10 ADCHCLKPRE[3:0] = 0101, HCLK Clock Divided By 10
- *     @arg RCC_ADCHCLK_DIV12 ADCHCLKPRE[3:0] = 0110, HCLK Clock Divided By 12
- *     @arg RCC_ADCHCLK_DIV16 ADCHCLKPRE[3:0] = 0111, HCLK Clock Divided By 16
- *     @arg RCC_ADCHCLK_DIV32 ADCHCLKPRE[3:0] = 1000, HCLK Clock Divided By 32
+ *     @arg RCC_ADCHCLK_DIV3 ADCHCLKPRE[3:0] = 0010, HCLK Clock Divided By 3
+ *     @arg RCC_ADCHCLK_DIV4 ADCHCLKPRE[3:0] = 0011, HCLK Clock Divided By 4
+ *     @arg RCC_ADCHCLK_DIV6 ADCHCLKPRE[3:0] = 0100, HCLK Clock Divided By 6
+ *     @arg RCC_ADCHCLK_DIV8 ADCHCLKPRE[3:0] = 0101, HCLK Clock Divided By 8
+ *     @arg RCC_ADCHCLK_DIV10 ADCHCLKPRE[3:0] = 0110, HCLK Clock Divided By 10
+ *     @arg RCC_ADCHCLK_DIV12 ADCHCLKPRE[3:0] = 0111, HCLK Clock Divided By 12
+ *     @arg RCC_ADCHCLK_DIV16 ADCHCLKPRE[3:0] = 1000, HCLK Clock Divided By 16
+ *     @arg RCC_ADCHCLK_DIV32 ADCHCLKPRE[3:0] = 1001, HCLK Clock Divided By 32
  *     @arg RCC_ADCHCLK_DIV_OTHERS ADCHCLKPRE[3:0] = others, HCLK Clock Divided By 32
 
  *     @arg RCC_ADCPLLCLK_DISABLE ADCPLLCLKPRES[4:0] = 0xxxx, ADC Pll Clock Disable
  *     @arg RCC_ADCPLLCLK_DIV1 ADCPLLCLKPRES[4:0] = 10000, Pll Clock Divided By 1
  *     @arg RCC_ADCPLLCLK_DIV2 ADCPLLCLKPRES[4:0] = 10001, Pll Clock Divided By 2
- *     @arg RCC_ADCPLLCLK_DIV4 ADCPLLCLKPRES[4:0] = 10010, Pll Clock Divided By 4
- *     @arg RCC_ADCPLLCLK_DIV6 ADCPLLCLKPRES[4:0] = 10011, Pll Clock Divided By 6
- *     @arg RCC_ADCPLLCLK_DIV8 ADCPLLCLKPRES[4:0] = 10100, Pll Clock Divided By 8
- *     @arg RCC_ADCPLLCLK_DIV10 ADCPLLCLKPRES[4:0] = 10101, Pll Clock Divided By 10
- *     @arg RCC_ADCPLLCLK_DIV12 ADCPLLCLKPRES[4:0] = 10110, Pll Clock Divided By 12
- *     @arg RCC_ADCPLLCLK_DIV16 ADCPLLCLKPRES[4:0] = 10111, Pll Clock Divided By 16
- *     @arg RCC_ADCPLLCLK_DIV32 ADCPLLCLKPRES[4:0] = 11000, Pll Clock Divided By 32
- *     @arg RCC_ADCPLLCLK_DIV64 ADCPLLCLKPRES[4:0] = 11001, Pll Clock Divided By 64
- *     @arg RCC_ADCPLLCLK_DIV128 ADCPLLCLKPRES[4:0] = 11010, Pll Clock Divided By 128
- *     @arg RCC_ADCPLLCLK_DIV256 ADCPLLCLKPRES[4:0] = 11011, Pll Clock Divided By 256
+ *     @arg RCC_ADCPLLCLK_DIV3 ADCPLLCLKPRES[4:0] = 10010, Pll Clock Divided By 3
+ *     @arg RCC_ADCPLLCLK_DIV4 ADCPLLCLKPRES[4:0] = 10011, Pll Clock Divided By 4
+ *     @arg RCC_ADCPLLCLK_DIV6 ADCPLLCLKPRES[4:0] = 10100, Pll Clock Divided By 6
+ *     @arg RCC_ADCPLLCLK_DIV8 ADCPLLCLKPRES[4:0] = 10101, Pll Clock Divided By 8
+ *     @arg RCC_ADCPLLCLK_DIV10 ADCPLLCLKPRES[4:0] = 10110, Pll Clock Divided By 10
+ *     @arg RCC_ADCPLLCLK_DIV12 ADCPLLCLKPRES[4:0] = 10111, Pll Clock Divided By 12
+ *     @arg RCC_ADCPLLCLK_DIV16 ADCPLLCLKPRES[4:0] = 11000, Pll Clock Divided By 16
+ *     @arg RCC_ADCPLLCLK_DIV32 ADCPLLCLKPRES[4:0] = 11001, Pll Clock Divided By 32
+ *     @arg RCC_ADCPLLCLK_DIV64 ADCPLLCLKPRES[4:0] = 11010, Pll Clock Divided By 64
+ *     @arg RCC_ADCPLLCLK_DIV128 ADCPLLCLKPRES[4:0] = 11011, Pll Clock Divided By 128
+ *     @arg RCC_ADCPLLCLK_DIV256 ADCPLLCLKPRES[4:0] = 11100, Pll Clock Divided By 256
  *     @arg RCC_ADCPLLCLK_DIV_OTHERS ADCPLLCLKPRES[4:0] = others, Pll Clock Divided By 256
  */
 void ADC_ConfigClk(ADC_CTRL3_CKMOD ADC_ClkMode, uint32_t RCC_ADCHCLKPrescaler)
@@ -1325,9 +1345,11 @@ void ADC_ConfigClk(ADC_CTRL3_CKMOD ADC_ClkMode, uint32_t RCC_ADCHCLKPrescaler)
     if(ADC_ClkMode==ADC_CTRL3_CKMOD_AHB){
         RCC_ConfigAdcPllClk(RCC_ADCPLLCLK_DIV1, DISABLE);
         RCC_ConfigAdcHclk(RCC_ADCHCLKPrescaler);
+        ADC_AHB_Clock_Mode_Config(ADC);		
     }else{
         RCC_ConfigAdcPllClk(RCC_ADCHCLKPrescaler, ENABLE);
         RCC_ConfigAdcHclk(RCC_ADCHCLK_DIV1);
+		ADC_PLL_Clock_Mode_Config(ADC);
     }
 }
 

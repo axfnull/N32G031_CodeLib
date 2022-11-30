@@ -202,7 +202,7 @@ void RCC_Configuration(uint32_t LPUART_CLK_SRC)
         case RCC_LPUARTCLK_SRC_LSE:
         {  
             /* Configures the External Low Speed oscillator (LSE) */
-            RCC_ConfigLse(RCC_LSE_ENABLE);
+            RCC_ConfigLse(RCC_LSE_ENABLE,0x01);
             while (RCC_GetFlagStatus(RCC_LSCTRL_FLAG_LSERD) == RESET)
             {
             }

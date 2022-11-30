@@ -8,7 +8,7 @@
     IDE工具：KEIL MDK-ARM 5.21.1.0
       
     /* 硬件环境：工程对应的开发硬件平台 */
-    开发板：N32G031CL-STB V1.0     
+    开发板：N32G031C8L7-STB V1.0     
 
 
 3、使用说明
@@ -23,4 +23,31 @@
 
 4、注意事项
     无
+
+
+1. Function description
+    1. The PVD configuration voltage generates a corresponding interrupt.
+
+
+2. Use environment
+
+    /* Software development environment: the name and version number of the software tool used in the current project */
+    IDE tool: KEIL MDK-ARM 5.21.1.0
+      
+    /* Hardware environment: the development hardware platform corresponding to the project */
+    Development board: N32G031C8L7-STB V1.0
+
+
+3. Instructions for use
+
+    System Configuration;
+        1. Clock source: HSE+PLL
+
+    Instructions:
+        After compiling under KEIL, burn it to the evaluation board, enter the debug mode through the emulator, and set a breakpoint in PVD_IRQHandler().
+        Running at full speed. Then adjust the voltage to the vicinity of the PVD setting voltage, and the program will stop at the breakpoint at this time.
+
+
+4. Matters needing attention
+    none
 

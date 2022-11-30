@@ -41,12 +41,6 @@ extern "C" {
 
 #include "n32g031.h"
 
-/*Led1-PE6,Led2-PE7,Led3-PF6,Led4-PF7,Led5-PF8*/
-#define LED1_PORT GPIOB
-
-#define LED1_PIN GPIO_PIN_0
-
-void LedBlink(GPIO_Module* GPIOx, uint16_t Pin);
 void RTC_TimeShow(void);
 void RTC_DateShow(void);
 #ifdef __cplusplus

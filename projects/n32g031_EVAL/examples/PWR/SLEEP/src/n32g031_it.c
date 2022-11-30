@@ -26,7 +26,7 @@
  * ****************************************************************************/
 
 /**
- * @file n32g43x_it.c
+ * @file n32g031_it.c
  * @author Nations
  * @version v1.0.0
  *
@@ -98,10 +98,10 @@ void EXTI0_1_IRQHandler(void)
 }
 
 /******************************************************************************/
-/*                 N32G43X Peripherals Interrupt Handlers                     */
+/*                 N32G031 Peripherals Interrupt Handlers                     */
 /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
 /*  available peripheral interrupt handler's name please refer to the startup */
-/*  file (startup_n32g43x.s).                                                 */
+/*  file (startup_n32g031.s).                                                 */
 /******************************************************************************/
 
 /**

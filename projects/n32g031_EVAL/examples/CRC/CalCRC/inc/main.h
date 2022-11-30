@@ -39,19 +39,13 @@
 extern "C" {
 #endif
 
-#include "n32g45x.h"
+#include "n32g031.h"
 
 typedef enum
 {
     FAILED = 0,
     PASSED = !FAILED
 } Status;
-
-#define DMA_CHANNEL_USED DMA1_CH1
-#define DMA_IRQ_HANDLER  DMA1_Channel1_IRQHandler
-#define DMA_IT_FLAG_TC   DMA1_INT_TXC1
-#define DMA_IT_FLAG_GL   DMA1_INT_GLB1
-#define DMA_IRQN         DMA1_Channel1_IRQn
 
 #ifdef __cplusplus
 }

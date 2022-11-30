@@ -392,7 +392,7 @@ void SetSysClock_LSI(void)
 void SetSysClock_LSE(void)
 {
     RCC_DeInit();
-    RCC_ConfigLse(RCC_LSE_ENABLE);
+    RCC_ConfigLse(RCC_LSE_ENABLE,0x01);
     while(RCC_GetFlagStatus(RCC_LSCTRL_FLAG_LSERD) == RESET)
     {
     }

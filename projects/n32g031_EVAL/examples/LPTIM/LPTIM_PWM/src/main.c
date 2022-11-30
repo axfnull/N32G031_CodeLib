@@ -48,9 +48,9 @@ int main(void)
 {
     /*!< At this stage the microcontroller clock setting is already configured,
          this is done through SystemInit() function which is called from startup
-         file (startup_n32g020_xx.s) before to branch to application main.
+         file (startup_n32g031_xx.s) before to branch to application main.
          To reconfigure the default setting of SystemInit() function, refer to
-         system_n32g43x.c file
+         system_n32g031.c file
        */
 //**********************************************************
     /* Enable the LSI source */

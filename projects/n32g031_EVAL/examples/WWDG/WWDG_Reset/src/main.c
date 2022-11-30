@@ -169,7 +169,7 @@ int main(void)
     /* Enable WWDG clock */
     RCC_EnableAPB1PeriphClk(RCC_APB1_PERIPH_WWDG, ENABLE);
 
-    /* WWDG clock counter = (PCLK1(36MHz)/4096)/8 = (~680 us)  */
+    /* WWDG clock counter = (PCLK1(48MHz)/4096)/8 = (~680 us)  */
     WWDG_SetPrescalerDiv(WWDG_PRESCALER_DIV8);
 
     /* Set Window value to 80; WWDG counter should be refreshed only when the counter

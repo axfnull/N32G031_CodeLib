@@ -41,18 +41,68 @@
 /** @addtogroup RTC_TAMPER
  * @{
  */
-
+ 
+RTC_DateType RTC_DateStructure;
+RTC_TimeType RTC_TimeStructure;
 RTC_InitType RTC_InitStructure;
 uint32_t SynchPrediv, AsynchPrediv;
 
-void LedBlink(GPIO_Module* GPIOx, uint16_t Pin);
-void LEDInit(void);
-void LedOn(uint16_t Pin);
-void LedOff(uint16_t Pin);
 void RTC_CLKSourceConfig(uint8_t ClkSrc, uint8_t FirstLastCfg, uint8_t RstBKP);
-static void RTC_PrescalerConfig(void);
+static void RTC_PrescalerSet(void);
 void TAMPER_INT_Configuration(FunctionalState cmd);
 void TamperInputIoInit(void);
+
+/**
+ * @brief  Display the current Date on the Hyperterminal.
+ */
+void RTC_DateShow(void)
+{
+    /* Get the current Date */
+    RTC_GetDate(RTC_FORMAT_BIN, &RTC_DateStructure);
+    log_info("\n\r //=========== Current Date Display ==============// \n\r");
+    log_info("\n\r The current date (WeekDay-Date-Month-Year) is :  %0.2d-%0.2d-%0.2d-%0.2d \n\r",
+             RTC_DateStructure.WeekDay,
+             RTC_DateStructure.Date,
+             RTC_DateStructure.Month,
+             RTC_DateStructure.Year);
+}
+
+/**
+ * @brief  Display the current time on the Hyperterminal.
+ */
+void RTC_TimeShow(void)
+{
+    /* Get the current Time and Date */
+    RTC_GetTime(RTC_FORMAT_BIN, &RTC_TimeStructure);
+    log_info("\n\r //============ Current Time Display ===============// \n\r");
+    log_info("\n\r The current time (Hour-Minute-Second) is :  %0.2d:%0.2d:%0.2d \n\r",
+             RTC_TimeStructure.Hours,
+             RTC_TimeStructure.Minutes,
+             RTC_TimeStructure.Seconds);
+    /* Unfreeze the RTC DAT Register */
+    (void)RTC->DATE;
+}
+
+/**
+ * @brief  Calendar initialization configuration.
+ */
+ErrorStatus RTC_CalendarInitialize(FunctionalState delay_cmd)
+{
+    /* Configure the RTC PRE, Date amd Time register */
+    if (RTC_ConfigCalendar(RTC_FORMAT_BIN, &RTC_InitStructure, NULL, NULL, delay_cmd) == ERROR)
+    {
+        log_info("\n\r>> !! RTC Calendar Configure failed. !! <<\n\r");
+        return ERROR;
+    }
+    else
+    {
+        log_info("\n\r>> !! RTC Calendar Configure success. !! <<\n\r");
+		RTC_DateShow();
+        RTC_TimeShow();
+        return SUCCESS;
+    }
+}
+
 /**
  * @brief  Main program.
  */
@@ -69,7 +119,10 @@ int main(void)
     log_info(" RTC Init");
     /* RTC clock source select 1:HSE/128 2:LSE 3:LSI*/
     RTC_CLKSourceConfig(3, 0, 1);
-    RTC_PrescalerConfig();
+    RTC_PrescalerSet();
+	/* RTC calendar Initialize*/
+	/* Disable the function of delay 1 second*/
+	RTC_CalendarInitialize(DISABLE);
     /*Tamper GPIO Initialize,PC13*/
     TamperInputIoInit();
     /*Configure Tamper GPIO trigger mode*/
@@ -90,7 +143,6 @@ int main(void)
     {
     }
 }
-
 
 /**
  * @brief  Configure the tamper interruput,EXTI19.
@@ -114,74 +166,10 @@ int main(void)
     NVIC_InitStructure.NVIC_IRQChannelCmd                 = cmd;
     NVIC_Init(&NVIC_InitStructure);
 }
-/**
- * @brief  Toggles the selected Led.
- * @param Led Specifies the Led to be toggled.
- *   This parameter can be one of following parameters:
- *     @arg LED1
- *     @arg LED2
- *     @arg LED3
- */
-void LedBlink(GPIO_Module* GPIOx, uint16_t Pin)
-{
-    GPIOx->POD ^= Pin;
-}
-/**
- * @brief  Turns selected Led on.
- * @param Led Specifies the Led to be set on.
- *   This parameter can be one of following parameters:
- *     @arg LED1
- *     @arg LED2
- *     @arg LED3
- */
-void LedOn(uint16_t Pin)
-{
-    GPIOB->PBC = Pin;
-}
-/**
- * @brief  Turns selected Led Off.
- * @param Led Specifies the Led to be set off.
- *   This parameter can be one of following parameters:
- *     @arg LED1
- *     @arg LED2
- *     @arg LED3
- */
-void LedOff(uint16_t Pin)
-{
-    GPIOB->PBSC = Pin;
-}
-/**
- * @brief  Configures LED GPIO.
- * @param Led Specifies the Led to be configured.
- *   This parameter can be one of following parameters:
- *     @arg LED1
- *     @arg LED2
- */
-
-void LEDInit(void)
-{
-    GPIO_InitType GPIO_InitStructure;
-
-    GPIO_InitStruct(&GPIO_InitStructure);
-    
-    /* Enable the GPIO_LED Clock */
-    RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOB, ENABLE);
-
-    /* Configure the GPIO_LED pin */
-    GPIO_InitStructure.Pin        = LED1_PIN;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_MODE_OUTPUT_PP;
-
-    GPIO_InitPeripheral(LED1_PORT, &GPIO_InitStructure);
-}
 
 /**
- * @brief  Configures LED GPIO.
- * @param Led Specifies the Led to be configured.
- *   This parameter can be one of following parameters:
- *     @arg LED1
- *     @arg LED2
+ * @brief  Configures Tamper Input GPIO.
  */
-
 void TamperInputIoInit(void)
 {
     GPIO_InitType GPIO_InitStructure;
@@ -198,22 +186,15 @@ void TamperInputIoInit(void)
     GPIO_InitPeripheral(GPIOC, &GPIO_InitStructure);
 }
 
-
 /**
- * @brief  RTC prescaler config.
+ * @brief  RTC prescaler set.
  */
-static void RTC_PrescalerConfig(void)
+static void RTC_PrescalerSet(void)
 {
-    /* Configure the RTC data register and RTC prescaler */
+    /* Init the RTC prescaler */
     RTC_InitStructure.RTC_AsynchPrediv = AsynchPrediv;
     RTC_InitStructure.RTC_SynchPrediv  = SynchPrediv;
     RTC_InitStructure.RTC_HourFormat   = RTC_24HOUR_FORMAT;
-
-    /* Check on RTC init */
-    if (RTC_Init(&RTC_InitStructure) == ERROR)
-    {
-        log_info("\r\n //******* RTC Prescaler Config failed **********// \r\n");
-    }
 }
 
 /**
@@ -273,9 +254,9 @@ void RTC_CLKSourceConfig(uint8_t ClkSrc, uint8_t FirstLastCfg, uint8_t RstBKP)
             RCC_EnableLsi(DISABLE); // LSI is turned off here to ensure that only one clock is turned on
 
 #if (_TEST_LSE_BYPASS_)
-            RCC_ConfigLse(RCC_LSE_BYPASS);
+            RCC_ConfigLse(RCC_LSE_BYPASS,0x01);
 #else
-            RCC_ConfigLse(RCC_LSE_ENABLE);
+            RCC_ConfigLse(RCC_LSE_ENABLE,0x01);
 #endif
 
             while (RCC_GetFlagStatus(RCC_LSCTRL_FLAG_LSERD) == RESET)
@@ -291,9 +272,9 @@ void RTC_CLKSourceConfig(uint8_t ClkSrc, uint8_t FirstLastCfg, uint8_t RstBKP)
             RCC_ConfigRtcClk(RCC_RTCCLK_SRC_LSE);
 
 #if (_TEST_LSE_BYPASS_)
-            RCC_ConfigLse(RCC_LSE_BYPASS);
+            RCC_ConfigLse(RCC_LSE_BYPASS,0x01);
 #else
-            RCC_ConfigLse(RCC_LSE_ENABLE);
+            RCC_ConfigLse(RCC_LSE_ENABLE,0x01);
 #endif
 
             while (RCC_GetFlagStatus(RCC_LSCTRL_FLAG_LSERD) == RESET)

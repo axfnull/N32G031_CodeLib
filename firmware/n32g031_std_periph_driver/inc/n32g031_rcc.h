@@ -427,6 +427,12 @@ typedef struct
  * @}
  */
 
+/** LSE_TRIMR **/
+#define LSE_TRIMR_ADDR               ((uint32_t)0x40001808)
+
+#define LSE_GM_MASK_VALUE            (0x600)
+#define LSE_GM_MAX_VALUE             (0x3)
+
 /** @addtogroup LSE_configuration
  * @{
  */
@@ -708,7 +714,7 @@ uint32_t RCC_GetLPTIMClkSrc(void);
 void RCC_ConfigLPUARTClk(uint32_t RCC_LPUARTCLKSource);
 uint32_t RCC_GetLPUARTClkSrc(void);
 
-void RCC_ConfigLse(uint8_t RCC_LSE);
+void RCC_ConfigLse(uint8_t RCC_LSE, uint8_t LSE_Trim);
 void RCC_EnableLsi(FunctionalState Cmd);
 void RCC_ConfigRtcClk(uint32_t RCC_RTCCLKSource);
 void RCC_EnableRtcClk(FunctionalState Cmd);

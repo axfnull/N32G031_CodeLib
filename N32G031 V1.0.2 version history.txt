@@ -1,0 +1,38 @@
+﻿/***   对中文用户  ***/
+Nationstech.N32G031_Library.1.0.2版本：
+1. I2C EEPROM例程优化中断/DMA方式
+2. LPUART驱动修改RTSEN\CTSEN宏定义
+3. Example中的readme增加英文描述
+4. OC1M的名字改成OC1MD
+5. RTC日历初始化驱动由3个函数合为1个函数，并在函数内新增可开启和关闭的1秒延时功能，延时计数调用TIM6和SysTick模块，可根据宏切换
+6. 基于新版日历初始化驱动函数，RTC各demo中相关配置代码均有同步更新和优化
+7. RCC驱动添加LSE Trim配置函数，更新所有调用到LSE配置函数的驱动及例程
+8. 修改SPI_Flash Demo里的W25Q扇区擦除指令为0x20
+9. 修改Beeper驱动，删除调用系统进入/退出LP RUN模式的代码，防止Beeper进入Beeper的LPRUN而使整个系统进入系统LP RUN
+10. 修改TIM的example中的注释
+11. 修改比较器的参考输入比较电压的宏
+12. 修改RCC_CFG_SCLKSW的宏定义
+13. 增加ADC内部通道Vrefint的采样demo
+14. CompOut demo中增加中断的配置
+15. RCC驱动添加FIN/N*M及FIN/N限制,超范围编译报错
+16. OpaAdByTim的demo修改ADC1M时钟源为HSI
+
+
+/***   For English users   ***/
+Nationstech.N32G031_Library.1.0.2 version：
+1. I2C EEPROM example optimizes interrupt/DMA mode
+2. Lpuart driver modifies RTSEN\CTSEN macro definition
+3. Add English description to readme in example
+4. Modify the name of OC1M to OC1MD
+5. The RTC calendar initialization driver is composed of 3 functions into one function, and a 1-second delay function that can be turned on and off is added in the function. The delay count calls the TIM6 and SysTick modules, which can be switched according to the macro.
+6. Based on the new version of the calendar initialization driver function, the relevant configuration codes in each RTC demo are updated and optimized synchronously
+7. RCC drive adds LSE Trim configuration function, update all drives and demo that call LSE configuration functions.
+8. Modify the W25Q sector erase command in SPI_Flash Demo to 0x20
+9. Modify the Beeper driver, delete the code that calls the system to enter/exit the LP RUN mode, and prevent the Beeper from entering the Beeper's LPRUN and making the entire system enter the system LP RUN
+10. Modify the remark in example of TIM
+11. Modify macro of reference input compare voltage in COMP
+12. Modify macro of RCC_CFG_SCLKSW
+13. Added ADC internal channel Vrefint sample demo
+14. Added interrupt configuration in CompOut demo
+15. RCC driver add FIN/N*M and FIN/N limit, an error was reported for over-range compilation
+16. Modify the clock source of ADC1M is from HSI

@@ -421,6 +421,9 @@ typedef struct
 #define ADC_CTRL3_VREFEN_MSK    ((uint32_t)0x1L << 1)
 #define ADC_CTRL3_REFSEL_MSK    ((uint32_t)0x1L << 0)
 
+#define ADC_CLOCK_PLL           ((uint32_t)ADC_CTRL3_CKMOD_MSK)
+#define ADC_CLOCK_AHB           ((uint32_t)(~ADC_CTRL3_CKMOD_MSK))
+
 typedef enum
 {
     ADC_CTRL3_CKMOD_AHB = 0,

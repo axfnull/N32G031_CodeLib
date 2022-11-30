@@ -380,6 +380,8 @@ void RCC_EnableHsi(FunctionalState Cmd)
  * @param RCC_PLLOUTDIV specifies the PLL Out divider clock.
  *   this parameter can be one of the following values:
  *     this parameter can be RCC_PLLOUT_DIV_x where x:[1,4]
+ * @note FIN/N must be set in 4MHz to 20MHz.
+ *       FIN/N*M must be set in 48MHz to 72MHz
  */
 void RCC_ConfigPll(uint32_t RCC_PLLSource, uint32_t RCC_PLLMul, uint32_t RCC_PLLPRE, uint32_t RCC_PLLOUTDIV)
 {
@@ -648,6 +650,7 @@ void RCC_ConfigTim18Clk(uint32_t RCC_TIM18CLKSource)
  *               ...
  *     @arg RCC_ADC1MCLK_DIV31 ADC1M clock = RCC_ADC1MCLKSource_xxx/31
  *     @arg RCC_ADC1MCLK_DIV32 ADC1M clock = RCC_ADC1MCLKSource_xxx/32
+ * @note The HSI should be enabled when you want to configure HSE as RCC ADC1M CLK source.
  */
 void RCC_ConfigAdc1mClk(uint32_t RCC_ADC1MCLKSource, uint32_t RCC_ADC1MPrescaler)
 {
@@ -723,7 +726,7 @@ void RCC_ConfigAdcPllClk(uint32_t RCC_ADCPLLCLKPrescaler, FunctionalState Cmd)
  *   This parameter can be on of the following values:
  *     @arg RCC_ADCHCLK_DIV1 ADCHCLKPRE[3:0] = 0000, HCLK Clock Divided By 1
  *     @arg RCC_ADCHCLK_DIV2 ADCHCLKPRE[3:0] = 0001, HCLK Clock Divided By 2
- *     @arg RCC_ADCHCLK_DIV4 ADCHCLKPRE[3:0] = 0010, HCLK Clock Divided By 3
+ *     @arg RCC_ADCHCLK_DIV3 ADCHCLKPRE[3:0] = 0010, HCLK Clock Divided By 3
  *     @arg RCC_ADCHCLK_DIV4 ADCHCLKPRE[3:0] = 0011, HCLK Clock Divided By 4
  *     @arg RCC_ADCHCLK_DIV6 ADCHCLKPRE[3:0] = 0100, HCLK Clock Divided By 6
  *     @arg RCC_ADCHCLK_DIV8 ADCHCLKPRE[3:0] = 0101, HCLK Clock Divided By 8
@@ -832,14 +835,38 @@ uint32_t RCC_GetLPUARTClkSrc(void)
 }
 
 /**
+ * @brief  Configures the External Low Speed oscillator (LSE) Trim.
+ * @param   LSE_Trim(LSE Driver Trim Level):
+ * 		        - 0x00~0x03    
+ */
+void RCC_LSE_Trim_Config(uint8_t LSE_Trim)
+{
+    uint32_t temp_value = 0;
+	
+    temp_value = *(__IO uint32_t*)LSE_TRIMR_ADDR;
+    /*clear lse trim*/
+    temp_value &= (~(LSE_GM_MASK_VALUE));
+		/*Check trim value */
+    (LSE_Trim>LSE_GM_MAX_VALUE) ? (LSE_Trim = LSE_GM_MAX_VALUE):(LSE_Trim &= LSE_GM_MAX_VALUE);
+    /*Set bit[10:9] */
+		temp_value |= (LSE_Trim<<9);
+		/* Store the new value */
+    *(__IO uint32_t*)LSE_TRIMR_ADDR = temp_value;
+}
+
+/**
  * @brief  Configures the External Low Speed oscillator (LSE).
  * @param RCC_LSE specifies the new state of the LSE.
  *   This parameter can be one of the following values:
  *     @arg RCC_LSE_DISABLE LSE oscillator OFF
  *     @arg RCC_LSE_ENABLE LSE oscillator ON
  *     @arg RCC_LSE_BYPASS LSE oscillator bypassed with external clock
+ * @param LSE_Trim(LSE Driver Trim Level):
+ * 					- 0x00~0x03
+ * @note  When you do not need to modify the TRIM value, LSE_Trim fill default value,
+ *        see Crystal Selection Guide for default value
  */
-void RCC_ConfigLse(uint8_t RCC_LSE)
+void RCC_ConfigLse(uint8_t RCC_LSE, uint8_t LSE_Trim)
 {
     /* Check the parameters */
     assert_param(IS_RCC_LSE(RCC_LSE));
@@ -851,6 +878,7 @@ void RCC_ConfigLse(uint8_t RCC_LSE)
         case RCC_LSE_ENABLE:
             /* Set LSEON bit */
             *(__IO uint32_t*)LSCTRL_ADDR |= RCC_LSE_ENABLE;
+						RCC_LSE_Trim_Config(LSE_Trim);
             break;
 
         case RCC_LSE_BYPASS:

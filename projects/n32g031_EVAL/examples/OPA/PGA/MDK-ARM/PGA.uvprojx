@@ -337,7 +337,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>N32G43X, USE_STDPERIPH_DRIVER</Define>
+              <Define>N32G031, USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
               <IncludePath>..\inc;..\..\..\..\..\..\firmware\CMSIS\core;..\..\..\..\..\..\firmware\CMSIS\device;..\..\..\..\..\..\firmware\n32g031_std_periph_driver\inc</IncludePath>
             </VariousControls>

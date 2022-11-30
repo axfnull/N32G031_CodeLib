@@ -324,7 +324,7 @@ void COMP_ConfigCTRLLock(COMP_LOCK_CMPXLK_ENUM COMPx_LOCK, FunctionalState Cmd)
 }
 
 /**
- * @brief  Config COMPx_CTRL register read-only.
+ * @brief  Config INVREF register.
  * @note   This function can be used for N32G031 devices.
  * @param  Vrefx      : VREF
  * @param  COMP_VREFx : COMP_INVREF_VREFXSEL_ENUM

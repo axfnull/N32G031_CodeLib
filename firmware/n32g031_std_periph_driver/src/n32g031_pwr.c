@@ -136,8 +136,8 @@ void PWR_PVDLevelConfig(uint8_t PWR_PVDLevel)
 
 /**
  * @brief  Enables or disables the WakeUp Pin functionality.
- * @param the wakeup pin number.
-*   note: this program is 1 to 2 .so move start 7.
+ * @param num wakeup pin number.
+ *            num is 1, 2, 3. 1 means wkup0(PA0), 2 means wkup1(PC13), 3 means wkup2(PA2)
  * @param Cmd new state of the WakeUp Pin functionality.
  *   This parameter can be: ENABLE or DISABLE.
  */
@@ -287,7 +287,7 @@ void PWR_EnterLowPowerRunMode(uint32_t PWR_LPRUNeFlash,uint8_t clk)
     }
     else
     {
-        RCC_ConfigLse(RCC_LSE_ENABLE);
+        RCC_ConfigLse(RCC_LSE_ENABLE,0x01);
         while(RCC_GetFlagStatus(RCC_LSCTRL_FLAG_LSERD) == RESET)
         {
         }

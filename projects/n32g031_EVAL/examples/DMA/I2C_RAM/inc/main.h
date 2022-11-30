@@ -39,7 +39,7 @@
 extern "C" {
 #endif
 
-#include "n32g45x.h"
+#include "n32g031.h"
 
 typedef enum
 {

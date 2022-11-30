@@ -176,6 +176,9 @@ int main(void)
     /* Wait for DMA channel3 transfer complete */
     while (!DMA_GetFlagStatus(I2S_SLAVE_Tx_DMA_FLAG, DMA))
         ;
+    /* Wait for I2S transfer complete */
+    while(SPI_I2S_GetStatus(I2S_SLAVE, SPI_I2S_BUSY_FLAG))
+        ;
     
     if(TransferStatus == PASSED)
     {

@@ -10,7 +10,7 @@
     IDE工具：KEIL MDK-ARM 5.21.1.0
       
     /* 硬件环境：工程对应的开发硬件平台 */
-    开发板：N32G031CL-STB V1.0     
+    开发板：N32G031C8L7-STB V1.0     
 
         
 
@@ -26,3 +26,31 @@
 
 
 4、注意事项
+
+1. Function description
+
+     /* Briefly describe the engineering function */
+     This example configures and demonstrates the setting of different system clocks, and uses MCO to output from PA8
+
+
+2. Use environment
+
+     /* Software development environment: the name and version number of the software tool used in the current project */
+     IDE tool: KEIL MDK-ARM 5.21.1.0
+      
+     /* Hardware environment: development hardware platform corresponding to the project */
+     Development board: N32G031C8L7-STB V1.0
+
+3. Instructions for use
+
+     /* Describe the configuration method of related modules; for example: clock, I/O, etc. */
+     USART: TX-PA9, baud rate 115200
+     GPIO: PA8-multiplexed as MC0 clock output
+
+     /* Describe the test steps and phenomena of Demo */
+     1. After compiling, download the program to reset and run;
+     2. Configure the system clock as HSI, HSE, and PLL respectively, and use the serial port to print out the current SYSCLK, HCLK, PCLK1, PCLK2 and other information, and use the PA8 multiplex pin to output the clock and view it with an oscilloscope;
+
+
+4. Attention
+    None

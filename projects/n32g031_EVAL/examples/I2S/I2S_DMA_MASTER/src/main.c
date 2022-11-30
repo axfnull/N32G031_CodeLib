@@ -144,7 +144,10 @@ int main(void)
     /* Wait for DMA channel3 transfer complete */
     while (!DMA_GetFlagStatus(I2S_MASTER_Tx_DMA_FLAG, DMA))
         ;
-
+    /* Wait for I2S transfer complete */
+    while(SPI_I2S_GetStatus(I2S_MASTER, SPI_I2S_BUSY_FLAG))
+        ;
+    
     /* I2S_MASTER_Rx_DMA_Channel configuration ---------------------------------------------*/
     DMA_DeInit(I2S_MASTER_Rx_DMA_Channel);
     DMA_InitStructure.PeriphAddr     = (uint32_t)&SPI1->DAT;
@@ -183,6 +186,7 @@ int main(void)
     /* Wait for DMA channel2 transfer complete */
     while (!DMA_GetFlagStatus(I2S_MASTER_Rx_DMA_FLAG, DMA))
         ;
+    I2S_Enable(I2S_MASTER, DISABLE);
     /* Check the correctness of written data */
     TransferStatus = Buffercmp(I2S_MASTER_Buffer_Rx, (uint16_t*)I2S_MASTER_Buffer_Tx, BufferSize);
     /* TransferStatus = PASSED, if the transmitted and received data
